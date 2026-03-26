@@ -1,6 +1,8 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include "db.php";
-
+include "db.php";
 if(isset($_POST['name'], $_POST['email'], $_POST['event'])) {
 
     $name = mysqli_real_escape_string($conn, $_POST['name']);
