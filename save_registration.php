@@ -1,7 +1,10 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include "db.php";  // only once
+include "db.php";
+echo "<pre>Form data received: ";
+print_r($_POST);
+echo "</pre>";// only once
 
 if(isset($_POST['name'], $_POST['email'], $_POST['event'])) {
 
