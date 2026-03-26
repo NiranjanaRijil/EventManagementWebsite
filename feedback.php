@@ -1,6 +1,5 @@
 <?php
-// Start session to display popup message
-session_start();
+// No PHP needed if you use separate save_feedback.php
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +9,6 @@ session_start();
 <title>Feedback</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* Feedback form container */
 .feedback-form-container {
     width: 50%;
     max-width: 600px;
@@ -21,7 +19,7 @@ session_start();
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* Inputs and textarea */
+/* Inputs */
 .feedback-form-container input,
 .feedback-form-container textarea {
     width: 100%;
@@ -30,12 +28,13 @@ session_start();
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 16px;
-    resize: none;       /* Fixed size */
 }
 
+/* Big fixed feedback box */
 .feedback-form-container textarea {
-    min-height: 150px;  /* Bigger textarea */
+    min-height: 150px;
     line-height: 1.5;
+    resize: none; /* Fixed size */
 }
 
 /* Centered button */
@@ -58,7 +57,7 @@ session_start();
     transform: scale(1.05);
 }
 
-/* Dark mode styles */
+/* Dark mode */
 .dark-mode {
     background-color: #121212;
     color: #fff;
@@ -74,32 +73,11 @@ session_start();
     color: #fff;
     border: 1px solid #555;
 }
-
-/* Popup confirmation */
-.popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background:white;
-    padding:60px;
-    border-radius:40px;
-    text-align:center;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
-    animation:pop 0.6s ease;
-    z-index: 1000;
-}
-
-@keyframes pop {
-    0%{transform:scale(0.5); opacity:0;}
-    100%{transform:scale(1); opacity:1;}
-}
 </style>
 </head>
 <body>
 
-<!-- Dark mode toggle button -->
-<div class="navbar" style="text-align:center;margin-top:20px;">
+<div class="navbar" style="text-align:center;margin-bottom:20px;">
     <button onclick="toggleMode()">🌙 Toggle Mode</button>
 </div>
 
@@ -108,25 +86,14 @@ session_start();
 <div class="feedback-form-container">
     <form action="save_feedback.php" method="POST">
         <input type="text" name="name" placeholder="Your Name" required>
-        <textarea name="message" placeholder="Your Feedback" rows="8" required></textarea>
+        <textarea name="message" placeholder="Your Feedback" required></textarea>
         <div class="form-button">
             <button type="submit">Submit Feedback</button>
         </div>
     </form>
 </div>
 
-<!-- Popup confirmation -->
-<?php
-if(isset($_SESSION['feedback_success'])) {
-    echo '<div class="popup">
-            <h2>🎉 Thank you for your feedback!</h2>
-          </div>';
-    unset($_SESSION['feedback_success']);
-}
-?>
-
 <script>
-// Dark mode toggle
 function toggleMode() {
     document.body.classList.toggle("dark-mode");
     if(document.body.classList.contains("dark-mode")){
@@ -136,7 +103,7 @@ function toggleMode() {
     }
 }
 
-// Load dark mode preference
+// Persistent mode
 window.onload = function() {
     if(localStorage.getItem("darkMode") === "enabled"){
         document.body.classList.add("dark-mode");
