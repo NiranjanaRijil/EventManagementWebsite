@@ -1,26 +1,52 @@
-<?php
-// No PHP needed here unless you handle submission in same file
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Register</title>
-<link rel="stylesheet" href="style.css">
+<title>Event Registration</title>
 <style>
-/* Form container */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    background: #fff;
+}
+body.dark-mode .navbar { background: #1e1e1e; }
+
+.navbar a { text-decoration: none; color: #333; font-weight: bold; }
+body.dark-mode .navbar a { color: #fff; }
+
+.navbar button {
+    cursor: pointer;
+    border: none;
+    background: #ddd;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+body.dark-mode .navbar button { background: #333; color: #fff; }
+
 .form-container {
-    width: 50%;
-    max-width: 600px;
+    max-width: 500px;
     margin: 50px auto;
     padding: 30px;
-    background: #f5f5f5;
+    background: #fff;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
+body.dark-mode .form-container { background: #1e1e1e; }
 
-/* Inputs and select */
 .form-container input,
 .form-container select {
     width: 100%;
@@ -30,13 +56,16 @@
     border: 1px solid #ccc;
     font-size: 16px;
 }
-
-/* Centered button */
-.form-button {
-    text-align: center;
+body.dark-mode .form-container input,
+body.dark-mode .form-container select {
+    background: #2c2c2c;
+    color: #fff;
+    border: 1px solid #555;
 }
 
-.form-button button {
+.form-container button {
+    display: block;
+    margin: 0 auto;
     padding: 14px 40px;
     border: none;
     border-radius: 40px;
@@ -46,42 +75,25 @@
     cursor: pointer;
     transition: 0.3s;
 }
-
-.form-button button:hover {
-    transform: scale(1.05);
-}
-
-/* Dark mode */
-.dark-mode {
-    background-color: #121212;
-    color: #fff;
-}
-
-.dark-mode .form-container {
-    background-color: #1e1e1e;
-}
-
-.dark-mode input,
-.dark-mode select {
-    background-color: #2c2c2c;
-    color: #fff;
-    border: 1px solid #555;
-}
+.form-container button:hover { transform: scale(1.05); }
 </style>
 </head>
 <body>
 
-<div class="navbar" style="text-align:center;margin-bottom:20px;">
-    <button onclick="toggleMode()">🌙 Toggle Mode</button>
+<div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="register.html">Register</a>
+    <a href="feedback.html">Feedback</a>
+    <button onclick="toggleMode()">🌙</button>
 </div>
 
 <h2 style="text-align:center;">Event Registration</h2>
 
 <div class="form-container">
-    <form action="save_registration.php" method="POST">
+    <form>
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
-
         <select name="event" required>
             <option value="">Select Event</option>
             <option>💻 Web Development Workshop</option>
@@ -94,10 +106,7 @@
             <option>🎨 UI/UX Design Seminar</option>
             <option>🔗 Blockchain Basics</option>
         </select>
-
-        <div class="form-button">
-            <button type="submit">Register Now</button>
-        </div>
+        <button type="submit">Register Now</button>
     </form>
 </div>
 
@@ -105,14 +114,13 @@
 function toggleMode() {
     document.body.classList.toggle("dark-mode");
     if(document.body.classList.contains("dark-mode")){
-        localStorage.setItem("darkMode", "enabled");
+        localStorage.setItem("darkMode","enabled");
     } else {
-        localStorage.setItem("darkMode", "disabled");
+        localStorage.setItem("darkMode","disabled");
     }
 }
 
-// Persistent mode
-window.onload = function() {
+window.onload = function(){
     if(localStorage.getItem("darkMode") === "enabled"){
         document.body.classList.add("dark-mode");
     }
