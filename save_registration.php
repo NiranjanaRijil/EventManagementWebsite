@@ -1,29 +1,42 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include "db.php";
-include "db.php";
+include "db.php";  // only once
+
 if(isset($_POST['name'], $_POST['email'], $_POST['event'])) {
 
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $event = mysqli_real_escape_string($conn, $_POST['event']);
 
-    // Check for duplicate registration
-    $check = mysqli_query($conn, "SELECT * FROM users u 
-        JOIN registration r ON u.id = r.user_id 
-        WHERE u.email='$email' AND r.event_name='$event'");
-
-    if(mysqli_num_rows($check) > 0){
-        echo "<h2 style='text-align:center;margin-top:50px;'>You have already registered for <strong>$event</strong>!</h2>";
-        exit;
+    // Check if this user already exists
+    $user_check = mysqli_query($conn, "SELECT id FROM users WHERE email='$email'");
+    if(mysqli_num_rows($user_check) > 0){
+        $user = mysqli_fetch_assoc($user_check);
+        $user_id = $user['id'];
+    } else {
+        // Insert new user
+        $result = mysqli_query($conn,"INSERT INTO users(name,email) VALUES('$name','$email')");
+        if(!$result){
+            die("User insert failed: " . mysqli_error($conn));
+        }
+        $user_id = mysqli_insert_id($conn);
     }
 
-    // Insert into users
-    mysqli_query($conn,"INSERT INTO users(name,email) VALUES('$name','$email')");
-    $user_id = mysqli_insert_id($conn);
+    // Check if user already registered for this event
+    $check_event = mysqli_query($conn,"SELECT * FROM registration WHERE user_id='$user_id' AND event_name='$event'");
+    if(mysqli_num_rows($check_event) > 0){
+        die("<h2 style='text-align:center;margin-top:50px;'>You have already registered for <strong>$event</strong>!</h2>");
+    }
 
-    // Insert into registration
-    mysqli_query($conn,"INSERT INTO registration(user_id,event_name) VALUES('$user_id','$event')");
+    // Insert registration
+    $reg_result = mysqli_query($conn,"INSERT INTO registration(user_id,event_name) VALUES('$user_id','$event')");
+    if(!$reg_result){
+        die("Registration insert failed: " . mysqli_error($conn));
+    }
+
+    echo "<h2 style='text-align:center;margin-top:50px;'>🎉 Registration Successful for <strong>$event</strong>!</h2>";
+} else {
+    die("Form data not submitted!");
 }
 ?>
