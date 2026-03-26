@@ -19,7 +19,7 @@
 
 <form action="save_feedback.php" method="POST">
 <input type="text" name="name" placeholder="Your Name" required>
-<textarea name="message" placeholder="Share your experience..." required></textarea>
+<textarea name="message" placeholder="Share your experience..." rows="8" required></textarea>
 <button type="submit">Submit Feedback</button>
 </form>
 
