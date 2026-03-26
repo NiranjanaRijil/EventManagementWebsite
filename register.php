@@ -1,5 +1,5 @@
 <?php
-session_start();
+// No PHP needed here unless you handle submission in same file
 ?>
 
 <!DOCTYPE html>
@@ -9,8 +9,8 @@ session_start();
 <title>Register</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* Centered form container */
-.register-form-container {
+/* Form container */
+.form-container {
     width: 50%;
     max-width: 600px;
     margin: 50px auto;
@@ -20,9 +20,9 @@ session_start();
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* Inputs */
-.register-form-container input,
-.register-form-container select {
+/* Inputs and select */
+.form-container input,
+.form-container select {
     width: 100%;
     padding: 15px;
     margin-bottom: 20px;
@@ -57,7 +57,7 @@ session_start();
     color: #fff;
 }
 
-.dark-mode .register-form-container {
+.dark-mode .form-container {
     background-color: #1e1e1e;
 }
 
@@ -71,14 +71,13 @@ session_start();
 </head>
 <body>
 
-<!-- Dark mode toggle -->
-<div class="navbar" style="text-align:center;margin-top:20px;">
+<div class="navbar" style="text-align:center;margin-bottom:20px;">
     <button onclick="toggleMode()">🌙 Toggle Mode</button>
 </div>
 
 <h2 style="text-align:center;">Event Registration</h2>
 
-<div class="register-form-container">
+<div class="form-container">
     <form action="save_registration.php" method="POST">
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
@@ -103,7 +102,6 @@ session_start();
 </div>
 
 <script>
-// Dark mode toggle
 function toggleMode() {
     document.body.classList.toggle("dark-mode");
     if(document.body.classList.contains("dark-mode")){
@@ -113,7 +111,7 @@ function toggleMode() {
     }
 }
 
-// Load dark mode preference
+// Persistent mode
 window.onload = function() {
     if(localStorage.getItem("darkMode") === "enabled"){
         document.body.classList.add("dark-mode");
